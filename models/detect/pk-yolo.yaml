@@ -1,0 +1,74 @@
+# PK-YOLO11: Integrated RepViT Backbone with YOLO11 Neck and Head
+# Optimized for Multiplanar MRI Brain Tumor Detection
+
+nc: 2  # negative and positive
+depth_multiple: 1.0 
+width_multiple: 1.0
+
+# Anchors
+anchors: 3
+
+# 1. Backbone: Spark RepViT (Maintaining PK-YOLO Paper Architecture)
+backbone:
+  [
+   [-1, 1, Silence, []], 
+   [-1, 1, Conv, [64, 3, 2]],      # 1-P1/2
+   [-1, 1, Conv, [128, 3, 2]],     # 2-P2/4
+   
+   # RepViT Blocks with Pretrained Knowledge
+   [-1, 1, RepViTBlock, [128]],    # 3
+   [-1, 1, RepViTSEBlock, [128]],  # 4-P3/8
+   
+   [-1, 1, ADown, [256]],          # 5
+   [-1, 1, RepViTBlock, [256]],    # 6
+   [-1, 1, RepViTSEBlock, [256]],  # 7-P4/16
+   
+   [-1, 1, ADown, [512]],          # 8
+   [-1, 1, RepViTBlock, [512]],    # 9
+   [-1, 1, RepViTSEBlock, [512]],  # 10-P5/32
+   
+   [-1, 1, SPPELAN, [512, 256]],   # 11-P5 (Backbone Output)
+  ]
+
+# 2. Head: YOLO11 Features (C3k2) with Dual Branch Support
+head:
+  [
+   # --- Auxiliary Branch (Left) ---
+   # P4 Calculation
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']], # 12
+   [[-1, 7], 1, Concat, [1]],      # 13 cat backbone P4
+   [-1, 1, C3k2, [256, False, 0.5]], # 14 (Aux P4)
+
+   # P3 Calculation
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']], # 15
+   [[-1, 4], 1, Concat, [1]],      # 16 cat backbone P3
+   [-1, 1, C3k2, [128, False, 0.5]], # 17 (Aux P3)
+
+   # --- Main Branch (Right) ---
+   [10, 1, SPPELAN, [512, 256]],   # 18 (Main P5 Start)
+   
+   # P4
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 7], 1, Concat, [1]],      # cat P4
+   [-1, 1, C3k2, [256, False, 0.5]], # 21 (Main P4)
+
+   # P3
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 4], 1, Concat, [1]],      # cat P3
+   [-1, 1, C3k2, [128, False, 0.5]], # 24 (Main P3 - Small)
+
+   # P4 (Downsample)
+   [-1, 1, ADown, [256]],
+   [[-1, 21], 1, Concat, [1]],     # cat P4
+   [-1, 1, C3k2, [256, False, 0.5]], # 27 (Main P4 - Medium)
+
+   # P5 (Downsample)
+   [-1, 1, ADown, [512]],
+   [[-1, 18], 1, Concat, [1]],     # cat P5
+   [-1, 1, C3k2, [512, True, 0.5]],  # 30 (Main P5 - Large)
+
+   # Final Detection Layer (Corrected Inputs for Size Match)
+   # Aux inputs: [17(P3), 14(P4), 11(P5)]
+   # Main inputs: [24(P3), 27(P4), 30(P5)]
+   [[17, 14, 11, 24, 27, 30], 1, DualDDetect, [nc]], 
+  ]

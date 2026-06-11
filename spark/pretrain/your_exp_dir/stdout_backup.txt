@@ -1,0 +1,790 @@
+[01-04 04:57:30] (n/spark/pretrain/main.py, line  40)=> initial args:
+{'ada': 0.0,
+ 'base_lr': 0.0002,
+ 'batch_size_per_gpu': 32,
+ 'bs': 32,
+ 'clip': 5.0,
+ 'cmd': '--model repvit_m2_3 --data_path '
+        '/content/drive/MyDrive/PK-YOLO-main/datasets/Br35H/images/train '
+        '--exp_name brain_pretrain --bs 32 --ep 100',
+ 'commit_id': '[unknown]',
+ 'commit_msg': '[unknown]',
+ 'cur_ep': '',
+ 'data_path': '/content/drive/MyDrive/PK-YOLO-main/datasets/Br35H/images/train',
+ 'dataloader_workers': 8,
+ 'densify_norm': '',
+ 'device': device(type='cuda', index=0),
+ 'dp': 0.0,
+ 'ep': 100,
+ 'exp_dir': '/content/drive/MyDrive/PK-YOLO-main/spark/pretrain/your_exp_dir',
+ 'exp_name': 'brain_pretrain',
+ 'finish_time': '',
+ 'first_logging': True,
+ 'glb_batch_size': 32,
+ 'init_weight': '',
+ 'input_size': 224,
+ 'is_convnext': False,
+ 'is_resnet': False,
+ 'last_loss': 0.0,
+ 'local_rank': 0,
+ 'log_epoch': <bound method Args.log_epoch of Args(prog='main.py', usage=None, description=None, formatter_class=<class 'argparse.HelpFormatter'>, conflict_handler='error', add_help=True)>,
+ 'log_txt_name': '/content/drive/MyDrive/PK-YOLO-main/spark/pretrain/your_exp_dir/pretrain_log.txt',
+ 'lr': 2.5e-05,
+ 'mask': 0.6,
+ 'model': 'repvit_m2_3',
+ 'opt': 'lamb',
+ 'remain_time': '',
+ 'resume_from': '',
+ 'sbn': False,
+ 'tb_lg_dir': '/content/drive/MyDrive/PK-YOLO-main/spark/pretrain/your_exp_dir/tensorboard_log',
+ 'wd': 0.04,
+ 'wde': 0.2,
+ 'wp_ep': 40}
+[01-04 04:57:30] (n/spark/pretrain/main.py, line  44)=> [build data for pre-training] ...
+
+[01-04 04:57:30] (etrain/utils/imagenet.py, line  84)=> Transform [pre-train] = 
+[01-04 04:57:30] (etrain/utils/imagenet.py, line  86)=> RandomResizedCrop(size=(224, 224), scale=(0.67, 1.0), ratio=(0.75, 1.3333), interpolation=bicubic, antialias=True)
+[01-04 04:57:30] (etrain/utils/imagenet.py, line  86)=> RandomHorizontalFlip(p=0.5)
+[01-04 04:57:30] (etrain/utils/imagenet.py, line  86)=> ToTensor()
+[01-04 04:57:30] (etrain/utils/imagenet.py, line  86)=> Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))
+[01-04 04:57:30] (etrain/utils/imagenet.py, line  87)=> ---------------------------
+
+[01-04 04:57:30] (n/spark/pretrain/main.py, line  54)=> [dataloader] gbs=32, lbs=32, iters_train=2
+[01-04 04:57:30] (train/models/__init__.py, line  64)=> [build_sparse_encoder] model kwargs={'pretrained': False, 'num_classes': 0, 'global_pool': ''}
+[01-04 04:57:31] (/spark/pretrain/spark.py, line  63)=> [SparK.__init__, densify 1/5]: use nn.Identity() as densify_proj
+[01-04 04:57:31] (/spark/pretrain/spark.py, line  67)=> [SparK.__init__, densify 2/5]: densify_proj(ksz=3, #para=0.92M)
+[01-04 04:57:31] (/spark/pretrain/spark.py, line  67)=> [SparK.__init__, densify 3/5]: densify_proj(ksz=3, #para=0.23M)
+[01-04 04:57:31] (/spark/pretrain/spark.py, line  67)=> [SparK.__init__, densify 4/5]: densify_proj(ksz=3, #para=0.06M)
+[01-04 04:57:31] (/spark/pretrain/spark.py, line  67)=> [SparK.__init__, densify 5/5]: densify_proj(ksz=3, #para=0.01M)
+[01-04 04:57:31] (/spark/pretrain/spark.py, line  73)=> [SparK.__init__] dims of mask_tokens=(640, 320, 160, 80, 40)
+[01-04 04:57:31] (rain/utils/lr_control.py, line  52)=> [get_ft_param_groups] param groups = 
+{ 'decay': { 'lr_scale': 1.0,
+             'params': "('sparse_encoder.sp_cnn.features.0.0.c.weight, sparse_encoder.sp_cnn.features.1.0.c.weight, sparse_encoder.sp_cnn.features.2.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.2.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.2.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.2.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.3.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.3.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.3.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.3.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.4.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.4.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.4.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.4.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.5.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.5.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.5.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.5.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.6.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.6.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.6.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.6.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.7.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.7.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.7.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.7.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.8.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.8.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.8.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.8.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.9.token_mixer.0.c.weight, sparse_encoder.sp_cnn.features.9.token_mixer.2.c.weight, sparse_encoder.sp_cnn.features.9.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.9.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.10.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.10.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.10.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.10.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.11.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.11.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.11.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.11.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.12.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.12.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.12.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.12.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.13.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.13.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.13.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.13.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.14.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.14.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.14.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.14.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.15.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.15.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.15.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.15.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.16.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.16.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.16.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.16.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.17.token_mixer.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.17.token_mixer.2.c.weight, sparse_encoder.sp_cnn.features.17.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.17.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.18.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.18.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.18.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.18.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.19.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.19.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.19.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.19.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.20.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.20.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.20.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.20.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.21.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.21.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.21.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.21.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.22.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.22.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.22.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.22.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.23.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.23.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.23.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.23.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.24.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.24.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.24.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.24.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.25.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.25.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.25.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.25.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.26.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.26.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.26.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.26.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.27.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.27.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.27.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.27.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.28.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.28.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.28.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.28.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.29.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.29.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.29.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.29.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.30.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.30.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.30.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.30.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.31.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.31.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.31.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.31.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.32.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.32.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.32.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.32.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.33.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.33.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.33.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.33.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.34.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.34.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.34.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.34.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.35.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.35.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.35.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.35.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.36.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.36.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.36.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.36.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.37.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.37.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.37.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.37.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.38.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.38.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.38.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.38.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.39.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.39.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.39.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.39.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.40.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.40.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.40.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.40.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.41.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.41.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.41.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.41.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.42.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.42.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.42.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.42.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.43.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.43.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.43.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.43.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.44.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.44.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.44.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.44.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.45.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.45.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.45.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.45.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.46.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.46.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.46.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.46.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.47.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.47.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.47.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.47.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.48.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.48.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.48.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.48.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.49.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.49.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.49.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.49.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.50.token_mixer.0.conv.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.50.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.50.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.50.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.51.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.51.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.51.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.51.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.52.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.52.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.52.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.52.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.53.token_mixer.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.53.token_mixer.2.c.weight, sparse_encoder.sp_cnn.features.53.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.53.channel_mixer.m.2.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.54.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.54.token_mixer.0.conv1.weight, sparse_encoder.sp_cnn.features.54.channel_mixer.m.0.c.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.54.channel_mixer.m.2.c.weight, sparse_encoder.sp_cnn.features.55.token_mixer.0.conv.c.weight, sparse_encoder.sp_cnn.features.55.token_mixer.0.conv1.weight, '\n"
+                       " 'sparse_encoder.sp_cnn.features.55.channel_mixer.m.0.c.weight, sparse_encoder.sp_cnn.features.55.channel_mixer.m.2.c.weight, dense_decoder.dec.0.upsample.weight, dense_decoder.dec.0.conv.0.weight, '\n"
+                       " 'dense_decoder.dec.0.conv.3.weight, dense_decoder.dec.1.upsample.weight, dense_decoder.dec.1.conv.0.weight, dense_decoder.dec.1.conv.3.weight, dense_decoder.dec.2.upsample.weight, '\n"
+                       " 'dense_decoder.dec.2.conv.0.weight, dense_decoder.dec.2.conv.3.weight, dense_decoder.dec.3.upsample.weight, dense_decoder.dec.3.conv.0.weight, dense_decoder.dec.3.conv.3.weight, '\n"
+                       " 'dense_decoder.dec.4.upsample.weight, dense_decoder.dec.4.conv.0.weight, dense_decoder.dec.4.conv.3.weight, dense_decoder.proj.weight, densify_projs.1.weight, densify_projs.2.weight, '\n"
+                       " 'densify_projs.3.weight, densify_projs.4.weight')",
+             'weight_decay_scale': 1.0},
+  'no_decay': { 'lr_scale': 1.0,
+                'params': "('sparse_encoder.sp_cnn.features.0.0.bn.weight, sparse_encoder.sp_cnn.features.0.0.bn.bias, sparse_encoder.sp_cnn.features.1.0.bn.weight, sparse_encoder.sp_cnn.features.1.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.2.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.2.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.2.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.2.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.2.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.2.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.2.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.2.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.2.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.3.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.3.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.3.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.3.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.3.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.3.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.3.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.3.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.3.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.4.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.4.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.4.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.4.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.4.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.4.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.4.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.4.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.4.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.5.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.5.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.5.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.5.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.5.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.5.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.5.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.5.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.5.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.6.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.6.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.6.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.6.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.6.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.6.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.6.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.6.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.6.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.7.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.7.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.7.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.7.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.7.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.7.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.7.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.7.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.7.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.8.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.8.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.8.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.8.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.8.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.8.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.8.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.8.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.8.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.9.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.9.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.9.token_mixer.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.9.token_mixer.2.bn.bias, sparse_encoder.sp_cnn.features.9.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.9.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.9.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.9.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.10.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.10.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.10.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.10.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.10.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.10.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.10.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.10.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.10.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.11.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.11.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.11.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.11.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.11.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.11.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.11.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.11.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.11.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.12.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.12.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.12.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.12.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.12.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.12.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.12.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.12.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.12.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.13.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.13.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.13.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.13.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.13.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.13.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.13.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.13.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.13.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.14.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.14.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.14.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.14.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.14.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.14.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.14.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.14.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.14.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.15.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.15.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.15.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.15.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.15.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.15.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.15.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.15.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.15.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.16.token_mixer.0.conv.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.16.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.16.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.16.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.16.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.16.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.16.channel_mixer.m.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.16.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.16.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.17.token_mixer.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.17.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.17.token_mixer.2.bn.weight, sparse_encoder.sp_cnn.features.17.token_mixer.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.17.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.17.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.17.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.17.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.18.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.18.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.18.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.18.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.18.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.18.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.18.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.18.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.18.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.19.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.19.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.19.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.19.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.19.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.19.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.19.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.19.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.19.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.20.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.20.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.20.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.20.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.20.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.20.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.20.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.20.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.20.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.21.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.21.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.21.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.21.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.21.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.21.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.21.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.21.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.21.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.22.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.22.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.22.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.22.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.22.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.22.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.22.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.22.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.22.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.23.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.23.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.23.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.23.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.23.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.23.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.23.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.23.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.23.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.24.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.24.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.24.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.24.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.24.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.24.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.24.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.24.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.24.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.25.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.25.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.25.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.25.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.25.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.25.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.25.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.25.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.25.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.26.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.26.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.26.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.26.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.26.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.26.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.26.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.26.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.26.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.27.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.27.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.27.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.27.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.27.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.27.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.27.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.27.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.27.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.28.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.28.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.28.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.28.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.28.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.28.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.28.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.28.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.28.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.29.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.29.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.29.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.29.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.29.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.29.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.29.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.29.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.29.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.30.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.30.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.30.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.30.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.30.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.30.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.30.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.30.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.30.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.31.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.31.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.31.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.31.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.31.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.31.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.31.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.31.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.31.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.32.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.32.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.32.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.32.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.32.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.32.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.32.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.32.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.32.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.33.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.33.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.33.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.33.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.33.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.33.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.33.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.33.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.33.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.34.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.34.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.34.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.34.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.34.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.34.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.34.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.34.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.34.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.35.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.35.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.35.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.35.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.35.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.35.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.35.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.35.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.35.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.36.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.36.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.36.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.36.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.36.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.36.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.36.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.36.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.36.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.37.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.37.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.37.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.37.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.37.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.37.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.37.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.37.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.37.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.38.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.38.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.38.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.38.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.38.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.38.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.38.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.38.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.38.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.39.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.39.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.39.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.39.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.39.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.39.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.39.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.39.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.39.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.40.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.40.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.40.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.40.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.40.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.40.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.40.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.40.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.40.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.41.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.41.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.41.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.41.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.41.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.41.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.41.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.41.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.41.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.42.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.42.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.42.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.42.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.42.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.42.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.42.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.42.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.42.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.43.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.43.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.43.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.43.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.43.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.43.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.43.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.43.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.43.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.44.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.44.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.44.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.44.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.44.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.44.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.44.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.44.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.44.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.45.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.45.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.45.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.45.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.45.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.45.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.45.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.45.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.45.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.46.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.46.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.46.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.46.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.46.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.46.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.46.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.46.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.46.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.47.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.47.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.47.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.47.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.47.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.47.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.47.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.47.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.47.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.48.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.48.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.48.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.48.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.48.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.48.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.48.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.48.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.48.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.49.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.49.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.49.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.49.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.49.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.49.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.49.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.49.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.49.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.50.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.50.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.50.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.50.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.50.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.50.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.50.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.50.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.50.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.51.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.51.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.51.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.51.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.51.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.51.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.51.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.51.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.51.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.52.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.52.token_mixer.0.conv.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.52.token_mixer.0.conv1.bias, sparse_encoder.sp_cnn.features.52.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.52.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.52.channel_mixer.m.0.bn.weight, sparse_encoder.sp_cnn.features.52.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.52.channel_mixer.m.2.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.52.channel_mixer.m.2.bn.bias, sparse_encoder.sp_cnn.features.53.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.53.token_mixer.0.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.53.token_mixer.2.bn.weight, sparse_encoder.sp_cnn.features.53.token_mixer.2.bn.bias, sparse_encoder.sp_cnn.features.53.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.53.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.53.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.53.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.54.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.54.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.54.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.54.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.54.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.54.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.54.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.54.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.54.channel_mixer.m.2.bn.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.55.token_mixer.0.conv.bn.weight, sparse_encoder.sp_cnn.features.55.token_mixer.0.conv.bn.bias, sparse_encoder.sp_cnn.features.55.token_mixer.0.conv1.bias, '\n"
+                          " 'sparse_encoder.sp_cnn.features.55.token_mixer.0.bn.weight, sparse_encoder.sp_cnn.features.55.token_mixer.0.bn.bias, sparse_encoder.sp_cnn.features.55.channel_mixer.m.0.bn.weight, '\n"
+                          " 'sparse_encoder.sp_cnn.features.55.channel_mixer.m.0.bn.bias, sparse_encoder.sp_cnn.features.55.channel_mixer.m.2.bn.weight, sparse_encoder.sp_cnn.features.55.channel_mixer.m.2.bn.bias, '\n"
+                          " 'dense_decoder.dec.0.upsample.bias, dense_decoder.dec.0.conv.1.weight, dense_decoder.dec.0.conv.1.bias, dense_decoder.dec.0.conv.4.weight, dense_decoder.dec.0.conv.4.bias, '\n"
+                          " 'dense_decoder.dec.1.upsample.bias, dense_decoder.dec.1.conv.1.weight, dense_decoder.dec.1.conv.1.bias, dense_decoder.dec.1.conv.4.weight, dense_decoder.dec.1.conv.4.bias, '\n"
+                          " 'dense_decoder.dec.2.upsample.bias, dense_decoder.dec.2.conv.1.weight, dense_decoder.dec.2.conv.1.bias, dense_decoder.dec.2.conv.4.weight, dense_decoder.dec.2.conv.4.bias, '\n"
+                          " 'dense_decoder.dec.3.upsample.bias, dense_decoder.dec.3.conv.1.weight, dense_decoder.dec.3.conv.1.bias, dense_decoder.dec.3.conv.4.weight, dense_decoder.dec.3.conv.4.bias, '\n"
+                          " 'dense_decoder.dec.4.upsample.bias, dense_decoder.dec.4.conv.1.weight, dense_decoder.dec.4.conv.1.bias, dense_decoder.dec.4.conv.4.weight, dense_decoder.dec.4.conv.4.bias, dense_decoder.proj.bias, '\n"
+                          " 'densify_projs.1.bias, densify_projs.2.bias, densify_projs.3.bias, densify_projs.4.bias, mask_tokens.0, mask_tokens.1, mask_tokens.2, mask_tokens.3, mask_tokens.4')",
+                'weight_decay_scale': 0.0}}
+
+[01-04 04:57:31] (k/pretrain/utils/lamb.py, line  63)=> [lamb1] max_grad_norm=5.0
+[01-04 04:57:31] (n/spark/pretrain/main.py, line  88)=> [optimizer] optimizer(functools.partial(<class 'utils.lamb.TheSameAsTimmLAMB'>, betas=(0.9, 0.0), max_grad_norm=5.0)) =TheSameAsTimmLAMB (
+Parameter Group 0
+    always_adapt: False
+    betas: (0.9, 0.0)
+    bias_correction: True
+    eps: 1e-06
+    grad_averaging: True
+    lr: 2.5e-05
+    lr_scale: 1.0
+    max_grad_norm: 5.0
+    trust_clip: False
+    weight_decay: 0.0
+    weight_decay_scale: 1.0
+
+Parameter Group 1
+    always_adapt: False
+    betas: (0.9, 0.0)
+    bias_correction: True
+    eps: 1e-06
+    grad_averaging: True
+    lr: 2.5e-05
+    lr_scale: 1.0
+    max_grad_norm: 5.0
+    trust_clip: False
+    weight_decay: 0.0
+    weight_decay_scale: 0.0
+)
+
+[01-04 04:57:31] (n/spark/pretrain/main.py, line  98)=> [PT start] from ep0
+[01-04 04:57:48] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 0:  [0/2]  eta: 0:00:32  max_lr: 0.00000  last_loss: 0.9995 (0.9995)  orig_norm: 0.5507 (0.5507)  iter: 16.2414s  data: 0.0004s
+[01-04 04:57:49] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 0:  [1/2]  eta: 0:00:08  max_lr: 0.00000  last_loss: 0.9994 (0.9994)  orig_norm: 0.5507 (0.5599)  iter: 8.7794s  data: 0.0003s
+[01-04 04:57:49] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 0:   Total time:      0:00:17   (8.781 s / it)
+[01-04 04:57:51] (n/spark/pretrain/main.py, line 118)=>   [*] [ep0/100]    Min/Last Recon Loss: 0.9994 0.9994,    Cost: 20.08s,    Remain: 0:33:08,    Finish @ 01-03 21:30
+[01-04 04:57:52] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 1:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9997 (0.9997)  orig_norm: 0.5718 (0.5718)  iter: 1.2875s  data: 0.0005s
+[01-04 04:57:53] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 1:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9996 (0.9997)  orig_norm: 0.5240 (0.5479)  iter: 1.2889s  data: 0.0003s
+[01-04 04:57:53] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 1:   Total time:      0:00:02   (1.291 s / it)
+[01-04 04:57:55] (n/spark/pretrain/main.py, line 118)=>   [*] [ep1/100]    Min/Last Recon Loss: 0.9994 0.9997,    Cost: 5.13s,    Remain: 0:08:23,    Finish @ 01-03 21:06
+[01-04 04:57:56] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 2:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9994 (0.9994)  orig_norm: 0.5242 (0.5242)  iter: 1.2974s  data: 0.0005s
+[01-04 04:57:57] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 2:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9994 (0.9994)  orig_norm: 0.5242 (0.5305)  iter: 1.2934s  data: 0.0004s
+[01-04 04:57:57] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 2:   Total time:      0:00:02   (1.296 s / it)
+[01-04 04:57:59] (n/spark/pretrain/main.py, line 118)=>   [*] [ep2/100]    Min/Last Recon Loss: 0.9994 0.9994,    Cost: 5.19s,    Remain: 0:08:23,    Finish @ 01-03 21:06
+[01-04 04:58:00] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 3:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9993 (0.9993)  orig_norm: 0.5615 (0.5615)  iter: 1.3358s  data: 0.0005s
+[01-04 04:58:02] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 3:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9993 (0.9993)  orig_norm: 0.5607 (0.5611)  iter: 1.3143s  data: 0.0004s
+[01-04 04:58:02] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 3:   Total time:      0:00:02   (1.317 s / it)
+[01-04 04:58:03] (n/spark/pretrain/main.py, line 118)=>   [*] [ep3/100]    Min/Last Recon Loss: 0.9993 0.9993,    Cost: 5.14s,    Remain: 0:08:13,    Finish @ 01-03 21:06
+[01-04 04:58:04] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 4:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9995 (0.9995)  orig_norm: 0.5553 (0.5553)  iter: 1.2909s  data: 0.0005s
+[01-04 04:58:06] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 4:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9994 (0.9995)  orig_norm: 0.5553 (0.5629)  iter: 1.2973s  data: 0.0004s
+[01-04 04:58:06] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 4:   Total time:      0:00:02   (1.300 s / it)
+[01-04 04:58:07] (n/spark/pretrain/main.py, line 118)=>   [*] [ep4/100]    Min/Last Recon Loss: 0.9993 0.9995,    Cost: 5.25s,    Remain: 0:08:19,    Finish @ 01-03 21:06
+[01-04 04:58:09] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 5:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9998 (0.9998)  orig_norm: 0.5354 (0.5354)  iter: 1.3020s  data: 0.0005s
+[01-04 04:58:10] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 5:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9995 (0.9997)  orig_norm: 0.5354 (0.5372)  iter: 1.3042s  data: 0.0003s
+[01-04 04:58:10] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 5:   Total time:      0:00:02   (1.307 s / it)
+[01-04 04:58:12] (n/spark/pretrain/main.py, line 118)=>   [*] [ep5/100]    Min/Last Recon Loss: 0.9993 0.9997,    Cost: 5.23s,    Remain: 0:08:12,    Finish @ 01-03 21:06
+[01-04 04:58:13] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 6:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9992 (0.9992)  orig_norm: 0.5524 (0.5524)  iter: 1.3681s  data: 0.0005s
+[01-04 04:58:14] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 6:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9992 (0.9993)  orig_norm: 0.5417 (0.5471)  iter: 1.3361s  data: 0.0004s
+[01-04 04:58:14] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 6:   Total time:      0:00:02   (1.339 s / it)
+[01-04 04:58:16] (n/spark/pretrain/main.py, line 118)=>   [*] [ep6/100]    Min/Last Recon Loss: 0.9993 0.9993,    Cost: 5.42s,    Remain: 0:08:24,    Finish @ 01-03 21:06
+[01-04 04:58:18] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 7:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9993 (0.9993)  orig_norm: 0.5455 (0.5455)  iter: 1.3901s  data: 0.0006s
+[01-04 04:58:19] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 7:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9987 (0.9990)  orig_norm: 0.5455 (0.5612)  iter: 1.3516s  data: 0.0004s
+[01-04 04:58:19] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 7:   Total time:      0:00:02   (1.354 s / it)
+[01-04 04:58:20] (n/spark/pretrain/main.py, line 118)=>   [*] [ep7/100]    Min/Last Recon Loss: 0.9990 0.9990,    Cost: 5.16s,    Remain: 0:07:55,    Finish @ 01-03 21:06
+[01-04 04:58:22] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 8:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9994 (0.9994)  orig_norm: 0.5341 (0.5341)  iter: 1.3099s  data: 0.0006s
+[01-04 04:58:23] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 8:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9990 (0.9992)  orig_norm: 0.5341 (0.5492)  iter: 1.3094s  data: 0.0004s
+[01-04 04:58:23] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 8:   Total time:      0:00:02   (1.312 s / it)
+[01-04 04:58:25] (n/spark/pretrain/main.py, line 118)=>   [*] [ep8/100]    Min/Last Recon Loss: 0.9990 0.9992,    Cost: 5.22s,    Remain: 0:07:55,    Finish @ 01-03 21:06
+[01-04 04:58:26] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 9:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9997 (0.9997)  orig_norm: 0.5157 (0.5157)  iter: 1.3128s  data: 0.0006s
+[01-04 04:58:27] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 9:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9997 (0.9997)  orig_norm: 0.5157 (0.5331)  iter: 1.3086s  data: 0.0004s
+[01-04 04:58:27] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 9:   Total time:      0:00:02   (1.311 s / it)
+[01-04 04:58:29] (n/spark/pretrain/main.py, line 118)=>   [*] [ep9/100]    Min/Last Recon Loss: 0.9990 0.9997,    Cost: 5.25s,    Remain: 0:07:52,    Finish @ 01-03 21:06
+[01-04 04:58:30] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 10:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9993 (0.9993)  orig_norm: 0.5349 (0.5349)  iter: 1.3699s  data: 0.0005s
+[01-04 04:58:32] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 10:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9993 (0.9994)  orig_norm: 0.5340 (0.5345)  iter: 1.3487s  data: 0.0004s
+[01-04 04:58:32] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 10:   Total time:      0:00:02   (1.351 s / it)
+[01-04 04:58:33] (n/spark/pretrain/main.py, line 118)=>   [*] [ep10/100]    Min/Last Recon Loss: 0.9990 0.9994,    Cost: 5.21s,    Remain: 0:07:44,    Finish @ 01-03 21:06
+[01-04 04:58:35] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 11:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9992 (0.9992)  orig_norm: 0.5517 (0.5517)  iter: 1.3093s  data: 0.0007s
+[01-04 04:58:36] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 11:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9991 (0.9992)  orig_norm: 0.5517 (0.5538)  iter: 1.3190s  data: 0.0004s
+[01-04 04:58:36] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 11:   Total time:      0:00:02   (1.322 s / it)
+[01-04 04:58:38] (n/spark/pretrain/main.py, line 118)=>   [*] [ep11/100]    Min/Last Recon Loss: 0.9990 0.9992,    Cost: 6.12s,    Remain: 0:08:59,    Finish @ 01-03 21:07
+[01-04 04:58:40] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 12:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9994 (0.9994)  orig_norm: 0.5473 (0.5473)  iter: 1.4040s  data: 0.0005s
+[01-04 04:58:41] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 12:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9992 (0.9993)  orig_norm: 0.5473 (0.5575)  iter: 1.3605s  data: 0.0004s
+[01-04 04:58:41] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 12:   Total time:      0:00:02   (1.363 s / it)
+[01-04 04:58:43] (n/spark/pretrain/main.py, line 118)=>   [*] [ep12/100]    Min/Last Recon Loss: 0.9990 0.9993,    Cost: 5.16s,    Remain: 0:07:29,    Finish @ 01-03 21:06
+[01-04 04:58:44] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 13:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9992 (0.9992)  orig_norm: 0.5521 (0.5521)  iter: 1.3224s  data: 0.0006s
+[01-04 04:58:45] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 13:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9992 (0.9992)  orig_norm: 0.5417 (0.5469)  iter: 1.3219s  data: 0.0004s
+[01-04 04:58:45] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 13:   Total time:      0:00:02   (1.325 s / it)
+[01-04 04:58:47] (n/spark/pretrain/main.py, line 118)=>   [*] [ep13/100]    Min/Last Recon Loss: 0.9990 0.9992,    Cost: 5.4s,    Remain: 0:07:44,    Finish @ 01-03 21:06
+[01-04 04:58:48] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 14:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9994 (0.9994)  orig_norm: 0.5304 (0.5304)  iter: 1.3886s  data: 0.0005s
+[01-04 04:58:50] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 14:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9993 (0.9993)  orig_norm: 0.5304 (0.5367)  iter: 1.3649s  data: 0.0003s
+[01-04 04:58:50] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 14:   Total time:      0:00:02   (1.367 s / it)
+[01-04 04:58:51] (n/spark/pretrain/main.py, line 118)=>   [*] [ep14/100]    Min/Last Recon Loss: 0.9990 0.9993,    Cost: 5.21s,    Remain: 0:07:23,    Finish @ 01-03 21:06
+[01-04 04:58:53] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 15:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9992 (0.9992)  orig_norm: 0.5548 (0.5548)  iter: 1.3310s  data: 0.0005s
+[01-04 04:58:54] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 15:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9992 (0.9992)  orig_norm: 0.5503 (0.5525)  iter: 1.3290s  data: 0.0003s
+[01-04 04:58:54] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 15:   Total time:      0:00:02   (1.331 s / it)
+[01-04 04:58:56] (n/spark/pretrain/main.py, line 118)=>   [*] [ep15/100]    Min/Last Recon Loss: 0.9990 0.9992,    Cost: 5.35s,    Remain: 0:07:29,    Finish @ 01-03 21:06
+[01-04 04:58:57] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 16:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9989 (0.9989)  orig_norm: 0.5423 (0.5423)  iter: 1.3927s  data: 0.0005s
+[01-04 04:58:58] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 16:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9985 (0.9987)  orig_norm: 0.5423 (0.5625)  iter: 1.3631s  data: 0.0004s
+[01-04 04:58:58] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 16:   Total time:      0:00:02   (1.365 s / it)
+[01-04 04:59:00] (n/spark/pretrain/main.py, line 118)=>   [*] [ep16/100]    Min/Last Recon Loss: 0.9987 0.9987,    Cost: 5.29s,    Remain: 0:07:19,    Finish @ 01-03 21:06
+[01-04 04:59:01] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 17:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9993 (0.9993)  orig_norm: 0.5350 (0.5350)  iter: 1.3380s  data: 0.0004s
+[01-04 04:59:03] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 17:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9992 (0.9993)  orig_norm: 0.5350 (0.5443)  iter: 1.3395s  data: 0.0003s
+[01-04 04:59:03] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 17:   Total time:      0:00:02   (1.342 s / it)
+[01-04 04:59:04] (n/spark/pretrain/main.py, line 118)=>   [*] [ep17/100]    Min/Last Recon Loss: 0.9987 0.9993,    Cost: 5.32s,    Remain: 0:07:16,    Finish @ 01-03 21:06
+[01-04 04:59:06] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 18:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9991 (0.9991)  orig_norm: 0.5324 (0.5324)  iter: 1.3420s  data: 0.0005s
+[01-04 04:59:07] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 18:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9990 (0.9991)  orig_norm: 0.5324 (0.5377)  iter: 1.3430s  data: 0.0004s
+[01-04 04:59:07] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 18:   Total time:      0:00:02   (1.345 s / it)
+[01-04 04:59:09] (n/spark/pretrain/main.py, line 118)=>   [*] [ep18/100]    Min/Last Recon Loss: 0.9987 0.9991,    Cost: 5.99s,    Remain: 0:08:05,    Finish @ 01-03 21:07
+[01-04 04:59:11] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 19:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9992 (0.9992)  orig_norm: 0.5380 (0.5380)  iter: 1.4009s  data: 0.0005s
+[01-04 04:59:12] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 19:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9989 (0.9990)  orig_norm: 0.5380 (0.5510)  iter: 1.3825s  data: 0.0004s
+[01-04 04:59:12] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 19:   Total time:      0:00:02   (1.386 s / it)
+[01-04 04:59:14] (n/spark/pretrain/main.py, line 118)=>   [*] [ep19/100]    Min/Last Recon Loss: 0.9987 0.9990,    Cost: 5.36s,    Remain: 0:07:09,    Finish @ 01-03 21:06
+[01-04 04:59:15] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 20:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9988 (0.9988)  orig_norm: 0.5703 (0.5703)  iter: 1.3874s  data: 0.0005s
+[01-04 04:59:17] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 20:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9988 (0.9989)  orig_norm: 0.5591 (0.5647)  iter: 1.3685s  data: 0.0004s
+[01-04 04:59:17] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 20:   Total time:      0:00:02   (1.371 s / it)
+[01-04 04:59:18] (n/spark/pretrain/main.py, line 118)=>   [*] [ep20/100]    Min/Last Recon Loss: 0.9987 0.9989,    Cost: 5.19s,    Remain: 0:06:50,    Finish @ 01-03 21:06
+[01-04 04:59:19] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 21:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9988 (0.9988)  orig_norm: 0.5466 (0.5466)  iter: 1.3502s  data: 0.0006s
+[01-04 04:59:21] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 21:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9988 (0.9990)  orig_norm: 0.5444 (0.5455)  iter: 1.3526s  data: 0.0004s
+[01-04 04:59:21] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 21:   Total time:      0:00:02   (1.355 s / it)
+[01-04 04:59:22] (n/spark/pretrain/main.py, line 118)=>   [*] [ep21/100]    Min/Last Recon Loss: 0.9987 0.9990,    Cost: 5.15s,    Remain: 0:06:42,    Finish @ 01-03 21:06
+[01-04 04:59:24] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 22:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9987 (0.9987)  orig_norm: 0.5671 (0.5671)  iter: 1.3567s  data: 0.0005s
+[01-04 04:59:25] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 22:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9983 (0.9985)  orig_norm: 0.5671 (0.5829)  iter: 1.3602s  data: 0.0003s
+[01-04 04:59:25] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 22:   Total time:      0:00:02   (1.362 s / it)
+[01-04 04:59:27] (n/spark/pretrain/main.py, line 118)=>   [*] [ep22/100]    Min/Last Recon Loss: 0.9985 0.9985,    Cost: 5.42s,    Remain: 0:06:57,    Finish @ 01-03 21:06
+[01-04 04:59:28] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 23:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9988 (0.9988)  orig_norm: 0.5623 (0.5623)  iter: 1.3823s  data: 0.0005s
+[01-04 04:59:29] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 23:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9986 (0.9987)  orig_norm: 0.5422 (0.5523)  iter: 1.3727s  data: 0.0004s
+[01-04 04:59:29] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 23:   Total time:      0:00:02   (1.375 s / it)
+[01-04 04:59:31] (n/spark/pretrain/main.py, line 118)=>   [*] [ep23/100]    Min/Last Recon Loss: 0.9985 0.9987,    Cost: 5.2s,    Remain: 0:06:35,    Finish @ 01-03 21:06
+[01-04 04:59:32] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 24:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9988 (0.9988)  orig_norm: 0.5302 (0.5302)  iter: 1.3638s  data: 0.0008s
+[01-04 04:59:34] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 24:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9986 (0.9987)  orig_norm: 0.5302 (0.5398)  iter: 1.3661s  data: 0.0005s
+[01-04 04:59:34] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 24:   Total time:      0:00:02   (1.369 s / it)
+[01-04 04:59:35] (n/spark/pretrain/main.py, line 118)=>   [*] [ep24/100]    Min/Last Recon Loss: 0.9985 0.9987,    Cost: 5.13s,    Remain: 0:06:25,    Finish @ 01-03 21:06
+[01-04 04:59:37] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 25:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9989 (0.9989)  orig_norm: 0.5539 (0.5539)  iter: 1.3694s  data: 0.0006s
+[01-04 04:59:38] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 25:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9984 (0.9986)  orig_norm: 0.5416 (0.5477)  iter: 1.3749s  data: 0.0004s
+[01-04 04:59:38] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 25:   Total time:      0:00:02   (1.378 s / it)
+[01-04 04:59:40] (n/spark/pretrain/main.py, line 118)=>   [*] [ep25/100]    Min/Last Recon Loss: 0.9985 0.9986,    Cost: 6.12s,    Remain: 0:07:33,    Finish @ 01-03 21:07
+[01-04 04:59:42] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 26:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9984 (0.9984)  orig_norm: 0.5555 (0.5555)  iter: 1.4687s  data: 0.0006s
+[01-04 04:59:43] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 26:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9984 (0.9987)  orig_norm: 0.5203 (0.5379)  iter: 1.4282s  data: 0.0004s
+[01-04 04:59:43] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 26:   Total time:      0:00:02   (1.431 s / it)
+[01-04 04:59:45] (n/spark/pretrain/main.py, line 118)=>   [*] [ep26/100]    Min/Last Recon Loss: 0.9985 0.9987,    Cost: 5.34s,    Remain: 0:06:30,    Finish @ 01-03 21:06
+[01-04 04:59:47] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 27:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9984 (0.9984)  orig_norm: 0.5644 (0.5644)  iter: 1.4446s  data: 0.0006s
+[01-04 04:59:48] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 27:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9981 (0.9983)  orig_norm: 0.5586 (0.5615)  iter: 1.4158s  data: 0.0004s
+[01-04 04:59:48] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 27:   Total time:      0:00:02   (1.417 s / it)
+[01-04 04:59:50] (n/spark/pretrain/main.py, line 118)=>   [*] [ep27/100]    Min/Last Recon Loss: 0.9983 0.9983,    Cost: 5.42s,    Remain: 0:06:30,    Finish @ 01-03 21:06
+[01-04 04:59:51] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 28:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9986 (0.9986)  orig_norm: 0.5315 (0.5315)  iter: 1.3955s  data: 0.0005s
+[01-04 04:59:52] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 28:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9981 (0.9984)  orig_norm: 0.5315 (0.5504)  iter: 1.3906s  data: 0.0003s
+[01-04 04:59:52] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 28:   Total time:      0:00:02   (1.393 s / it)
+[01-04 04:59:54] (n/spark/pretrain/main.py, line 118)=>   [*] [ep28/100]    Min/Last Recon Loss: 0.9983 0.9984,    Cost: 5.33s,    Remain: 0:06:18,    Finish @ 01-03 21:06
+[01-04 04:59:55] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 29:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9985 (0.9985)  orig_norm: 0.5419 (0.5419)  iter: 1.3852s  data: 0.0005s
+[01-04 04:59:57] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 29:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9978 (0.9981)  orig_norm: 0.5419 (0.5643)  iter: 1.3873s  data: 0.0004s
+[01-04 04:59:57] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 29:   Total time:      0:00:02   (1.390 s / it)
+[01-04 04:59:58] (n/spark/pretrain/main.py, line 118)=>   [*] [ep29/100]    Min/Last Recon Loss: 0.9981 0.9981,    Cost: 5.36s,    Remain: 0:06:15,    Finish @ 01-03 21:06
+[01-04 05:00:01] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 30:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9987 (0.9987)  orig_norm: 0.5114 (0.5114)  iter: 1.4803s  data: 0.0006s
+[01-04 05:00:02] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 30:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9983 (0.9985)  orig_norm: 0.5114 (0.5285)  iter: 1.4408s  data: 0.0004s
+[01-04 05:00:02] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 30:   Total time:      0:00:02   (1.443 s / it)
+[01-04 05:00:04] (n/spark/pretrain/main.py, line 118)=>   [*] [ep30/100]    Min/Last Recon Loss: 0.9981 0.9985,    Cost: 5.96s,    Remain: 0:06:51,    Finish @ 01-03 21:06
+[01-04 05:00:06] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 31:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9981 (0.9981)  orig_norm: 0.5511 (0.5511)  iter: 1.4535s  data: 0.0005s
+[01-04 05:00:07] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 31:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9981 (0.9981)  orig_norm: 0.5479 (0.5495)  iter: 1.4255s  data: 0.0004s
+[01-04 05:00:07] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 31:   Total time:      0:00:02   (1.427 s / it)
+[01-04 05:00:08] (n/spark/pretrain/main.py, line 118)=>   [*] [ep31/100]    Min/Last Recon Loss: 0.9981 0.9981,    Cost: 5.37s,    Remain: 0:06:05,    Finish @ 01-03 21:06
+[01-04 05:00:10] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 32:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9982 (0.9982)  orig_norm: 0.5555 (0.5555)  iter: 1.3903s  data: 0.0004s
+[01-04 05:00:11] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 32:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9982 (0.9982)  orig_norm: 0.5527 (0.5541)  iter: 1.3919s  data: 0.0003s
+[01-04 05:00:11] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 32:   Total time:      0:00:02   (1.394 s / it)
+[01-04 05:00:13] (n/spark/pretrain/main.py, line 118)=>   [*] [ep32/100]    Min/Last Recon Loss: 0.9981 0.9982,    Cost: 5.22s,    Remain: 0:05:50,    Finish @ 01-03 21:06
+[01-04 05:00:14] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 33:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9982 (0.9982)  orig_norm: 0.5421 (0.5421)  iter: 1.3939s  data: 0.0006s
+[01-04 05:00:16] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 33:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9982 (0.9982)  orig_norm: 0.5367 (0.5394)  iter: 1.3980s  data: 0.0005s
+[01-04 05:00:16] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 33:   Total time:      0:00:02   (1.400 s / it)
+[01-04 05:00:17] (n/spark/pretrain/main.py, line 118)=>   [*] [ep33/100]    Min/Last Recon Loss: 0.9981 0.9982,    Cost: 5.32s,    Remain: 0:05:51,    Finish @ 01-03 21:06
+[01-04 05:00:18] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 34:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9983 (0.9983)  orig_norm: 0.5131 (0.5131)  iter: 1.3838s  data: 0.0006s
+[01-04 05:00:20] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 34:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9983 (0.9983)  orig_norm: 0.5131 (0.5156)  iter: 1.3831s  data: 0.0004s
+[01-04 05:00:20] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 34:   Total time:      0:00:02   (1.385 s / it)
+[01-04 05:00:21] (n/spark/pretrain/main.py, line 118)=>   [*] [ep34/100]    Min/Last Recon Loss: 0.9981 0.9983,    Cost: 5.3s,    Remain: 0:05:44,    Finish @ 01-03 21:06
+[01-04 05:00:23] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 35:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9975 (0.9975)  orig_norm: 0.5661 (0.5661)  iter: 1.3825s  data: 0.0005s
+[01-04 05:00:24] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 35:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9975 (0.9975)  orig_norm: 0.5576 (0.5619)  iter: 1.3813s  data: 0.0003s
+[01-04 05:00:24] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 35:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:00:26] (n/spark/pretrain/main.py, line 118)=>   [*] [ep35/100]    Min/Last Recon Loss: 0.9975 0.9975,    Cost: 5.35s,    Remain: 0:05:42,    Finish @ 01-03 21:06
+[01-04 05:00:27] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 36:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9974 (0.9974)  orig_norm: 0.5793 (0.5793)  iter: 1.3792s  data: 0.0006s
+[01-04 05:00:29] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 36:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9974 (0.9976)  orig_norm: 0.5601 (0.5697)  iter: 1.3771s  data: 0.0004s
+[01-04 05:00:29] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 36:   Total time:      0:00:02   (1.379 s / it)
+[01-04 05:00:30] (n/spark/pretrain/main.py, line 118)=>   [*] [ep36/100]    Min/Last Recon Loss: 0.9975 0.9976,    Cost: 5.4s,    Remain: 0:05:40,    Finish @ 01-03 21:06
+[01-04 05:00:32] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 37:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9975 (0.9975)  orig_norm: 0.5511 (0.5511)  iter: 1.3714s  data: 0.0005s
+[01-04 05:00:33] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 37:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9972 (0.9974)  orig_norm: 0.5511 (0.5592)  iter: 1.3752s  data: 0.0004s
+[01-04 05:00:33] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 37:   Total time:      0:00:02   (1.378 s / it)
+[01-04 05:00:35] (n/spark/pretrain/main.py, line 118)=>   [*] [ep37/100]    Min/Last Recon Loss: 0.9974 0.9974,    Cost: 5.36s,    Remain: 0:05:32,    Finish @ 01-03 21:06
+[01-04 05:00:36] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 38:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9976 (0.9976)  orig_norm: 0.5512 (0.5512)  iter: 1.3705s  data: 0.0005s
+[01-04 05:00:37] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 38:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9976 (0.9977)  orig_norm: 0.5427 (0.5469)  iter: 1.3716s  data: 0.0003s
+[01-04 05:00:37] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 38:   Total time:      0:00:02   (1.374 s / it)
+[01-04 05:00:39] (n/spark/pretrain/main.py, line 118)=>   [*] [ep38/100]    Min/Last Recon Loss: 0.9974 0.9977,    Cost: 5.25s,    Remain: 0:05:20,    Finish @ 01-03 21:05
+[01-04 05:00:40] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 39:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9978 (0.9978)  orig_norm: 0.5243 (0.5243)  iter: 1.3816s  data: 0.0005s
+[01-04 05:00:42] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 39:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9971 (0.9974)  orig_norm: 0.5243 (0.5416)  iter: 1.3757s  data: 0.0004s
+[01-04 05:00:42] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 39:   Total time:      0:00:02   (1.378 s / it)
+[01-04 05:00:43] (n/spark/pretrain/main.py, line 118)=>   [*] [ep39/100]    Min/Last Recon Loss: 0.9974 0.9974,    Cost: 5.23s,    Remain: 0:05:14,    Finish @ 01-03 21:05
+[01-04 05:00:45] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 40:  [0/2]  eta: 0:00:02  max_lr: 0.00003  last_loss: 0.9971 (0.9971)  orig_norm: 0.5633 (0.5633)  iter: 1.3678s  data: 0.0005s
+[01-04 05:00:46] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 40:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9971 (0.9972)  orig_norm: 0.5301 (0.5467)  iter: 1.3700s  data: 0.0003s
+[01-04 05:00:46] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 40:   Total time:      0:00:02   (1.373 s / it)
+[01-04 05:00:48] (n/spark/pretrain/main.py, line 118)=>   [*] [ep40/100]    Min/Last Recon Loss: 0.9972 0.9972,    Cost: 6.07s,    Remain: 0:05:58,    Finish @ 01-03 21:06
+[01-04 05:00:50] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 41:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9971 (0.9971)  orig_norm: 0.5520 (0.5520)  iter: 1.4515s  data: 0.0005s
+[01-04 05:00:51] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 41:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9968 (0.9970)  orig_norm: 0.5520 (0.5643)  iter: 1.4142s  data: 0.0004s
+[01-04 05:00:51] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 41:   Total time:      0:00:02   (1.417 s / it)
+[01-04 05:00:53] (n/spark/pretrain/main.py, line 118)=>   [*] [ep41/100]    Min/Last Recon Loss: 0.9970 0.9970,    Cost: 5.39s,    Remain: 0:05:13,    Finish @ 01-03 21:06
+[01-04 05:00:54] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 42:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9970 (0.9970)  orig_norm: 0.5439 (0.5439)  iter: 1.3726s  data: 0.0005s
+[01-04 05:00:55] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 42:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9969 (0.9969)  orig_norm: 0.5439 (0.5527)  iter: 1.3752s  data: 0.0003s
+[01-04 05:00:55] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 42:   Total time:      0:00:02   (1.378 s / it)
+[01-04 05:00:57] (n/spark/pretrain/main.py, line 118)=>   [*] [ep42/100]    Min/Last Recon Loss: 0.9969 0.9969,    Cost: 5.18s,    Remain: 0:04:55,    Finish @ 01-03 21:05
+[01-04 05:00:58] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 43:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9972 (0.9972)  orig_norm: 0.5408 (0.5408)  iter: 1.3694s  data: 0.0006s
+[01-04 05:01:00] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 43:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9969 (0.9970)  orig_norm: 0.5408 (0.5418)  iter: 1.3710s  data: 0.0005s
+[01-04 05:01:00] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 43:   Total time:      0:00:02   (1.374 s / it)
+[01-04 05:01:01] (n/spark/pretrain/main.py, line 118)=>   [*] [ep43/100]    Min/Last Recon Loss: 0.9969 0.9970,    Cost: 5.22s,    Remain: 0:04:52,    Finish @ 01-03 21:05
+[01-04 05:01:03] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 44:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9971 (0.9971)  orig_norm: 0.5263 (0.5263)  iter: 1.3800s  data: 0.0005s
+[01-04 05:01:04] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 44:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9971 (0.9972)  orig_norm: 0.5263 (0.5361)  iter: 1.3880s  data: 0.0003s
+[01-04 05:01:04] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 44:   Total time:      0:00:02   (1.391 s / it)
+[01-04 05:01:06] (n/spark/pretrain/main.py, line 118)=>   [*] [ep44/100]    Min/Last Recon Loss: 0.9969 0.9972,    Cost: 5.64s,    Remain: 0:05:10,    Finish @ 01-03 21:06
+[01-04 05:01:07] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 45:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9963 (0.9963)  orig_norm: 0.5629 (0.5629)  iter: 1.4428s  data: 0.0006s
+[01-04 05:01:09] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 45:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9963 (0.9965)  orig_norm: 0.5474 (0.5552)  iter: 1.4119s  data: 0.0004s
+[01-04 05:01:09] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 45:   Total time:      0:00:02   (1.415 s / it)
+[01-04 05:01:10] (n/spark/pretrain/main.py, line 118)=>   [*] [ep45/100]    Min/Last Recon Loss: 0.9965 0.9965,    Cost: 5.31s,    Remain: 0:04:47,    Finish @ 01-03 21:05
+[01-04 05:01:12] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 46:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9966 (0.9966)  orig_norm: 0.5420 (0.5420)  iter: 1.3831s  data: 0.0005s
+[01-04 05:01:13] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 46:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9966 (0.9970)  orig_norm: 0.5153 (0.5286)  iter: 1.3889s  data: 0.0004s
+[01-04 05:01:13] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 46:   Total time:      0:00:02   (1.392 s / it)
+[01-04 05:01:14] (n/spark/pretrain/main.py, line 118)=>   [*] [ep46/100]    Min/Last Recon Loss: 0.9965 0.9970,    Cost: 5.33s,    Remain: 0:04:42,    Finish @ 01-03 21:05
+[01-04 05:01:17] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 47:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9969 (0.9969)  orig_norm: 0.5418 (0.5418)  iter: 1.4558s  data: 0.0006s
+[01-04 05:01:18] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 47:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9965 (0.9967)  orig_norm: 0.5418 (0.5456)  iter: 1.4236s  data: 0.0004s
+[01-04 05:01:18] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 47:   Total time:      0:00:02   (1.426 s / it)
+[01-04 05:01:21] (n/spark/pretrain/main.py, line 118)=>   [*] [ep47/100]    Min/Last Recon Loss: 0.9965 0.9967,    Cost: 6.41s,    Remain: 0:05:33,    Finish @ 01-03 21:06
+[01-04 05:01:22] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 48:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9970 (0.9970)  orig_norm: 0.5279 (0.5279)  iter: 1.4466s  data: 0.0005s
+[01-04 05:01:24] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 48:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9966 (0.9968)  orig_norm: 0.5279 (0.5413)  iter: 1.4161s  data: 0.0003s
+[01-04 05:01:24] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 48:   Total time:      0:00:02   (1.418 s / it)
+[01-04 05:01:25] (n/spark/pretrain/main.py, line 118)=>   [*] [ep48/100]    Min/Last Recon Loss: 0.9965 0.9968,    Cost: 5.26s,    Remain: 0:04:28,    Finish @ 01-03 21:05
+[01-04 05:01:26] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 49:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9968 (0.9968)  orig_norm: 0.5321 (0.5321)  iter: 1.3774s  data: 0.0004s
+[01-04 05:01:28] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 49:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9964 (0.9966)  orig_norm: 0.5321 (0.5327)  iter: 1.3867s  data: 0.0003s
+[01-04 05:01:28] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 49:   Total time:      0:00:02   (1.389 s / it)
+[01-04 05:01:29] (n/spark/pretrain/main.py, line 118)=>   [*] [ep49/100]    Min/Last Recon Loss: 0.9965 0.9966,    Cost: 5.46s,    Remain: 0:04:33,    Finish @ 01-03 21:06
+[01-04 05:01:31] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 50:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9965 (0.9965)  orig_norm: 0.5452 (0.5452)  iter: 1.3798s  data: 0.0005s
+[01-04 05:01:32] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 50:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9964 (0.9964)  orig_norm: 0.5311 (0.5382)  iter: 1.3810s  data: 0.0003s
+[01-04 05:01:32] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 50:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:01:34] (n/spark/pretrain/main.py, line 118)=>   [*] [ep50/100]    Min/Last Recon Loss: 0.9964 0.9964,    Cost: 5.23s,    Remain: 0:04:16,    Finish @ 01-03 21:05
+[01-04 05:01:35] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 51:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9959 (0.9959)  orig_norm: 0.5551 (0.5551)  iter: 1.3856s  data: 0.0005s
+[01-04 05:01:37] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 51:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9959 (0.9960)  orig_norm: 0.5307 (0.5429)  iter: 1.3857s  data: 0.0003s
+[01-04 05:01:37] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 51:   Total time:      0:00:02   (1.389 s / it)
+[01-04 05:01:38] (n/spark/pretrain/main.py, line 118)=>   [*] [ep51/100]    Min/Last Recon Loss: 0.9960 0.9960,    Cost: 5.16s,    Remain: 0:04:08,    Finish @ 01-03 21:05
+[01-04 05:01:39] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 52:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9957 (0.9957)  orig_norm: 0.5604 (0.5604)  iter: 1.3755s  data: 0.0005s
+[01-04 05:01:41] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 52:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9957 (0.9961)  orig_norm: 0.5306 (0.5455)  iter: 1.3813s  data: 0.0004s
+[01-04 05:01:41] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 52:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:01:42] (n/spark/pretrain/main.py, line 118)=>   [*] [ep52/100]    Min/Last Recon Loss: 0.9960 0.9961,    Cost: 5.4s,    Remain: 0:04:14,    Finish @ 01-03 21:05
+[01-04 05:01:44] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 53:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9961 (0.9961)  orig_norm: 0.5431 (0.5431)  iter: 1.3784s  data: 0.0006s
+[01-04 05:01:45] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 53:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9958 (0.9959)  orig_norm: 0.5431 (0.5438)  iter: 1.3805s  data: 0.0004s
+[01-04 05:01:45] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 53:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:01:47] (n/spark/pretrain/main.py, line 118)=>   [*] [ep53/100]    Min/Last Recon Loss: 0.9959 0.9959,    Cost: 5.16s,    Remain: 0:03:57,    Finish @ 01-03 21:05
+[01-04 05:01:48] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 54:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9962 (0.9962)  orig_norm: 0.5307 (0.5307)  iter: 1.3728s  data: 0.0005s
+[01-04 05:01:49] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 54:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9957 (0.9959)  orig_norm: 0.5307 (0.5448)  iter: 1.3759s  data: 0.0003s
+[01-04 05:01:49] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 54:   Total time:      0:00:02   (1.378 s / it)
+[01-04 05:01:52] (n/spark/pretrain/main.py, line 118)=>   [*] [ep54/100]    Min/Last Recon Loss: 0.9959 0.9959,    Cost: 6.14s,    Remain: 0:04:36,    Finish @ 01-03 21:06
+[01-04 05:01:53] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 55:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9958 (0.9958)  orig_norm: 0.5380 (0.5380)  iter: 1.4446s  data: 0.0006s
+[01-04 05:01:55] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 55:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9954 (0.9956)  orig_norm: 0.5380 (0.5528)  iter: 1.4107s  data: 0.0004s
+[01-04 05:01:55] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 55:   Total time:      0:00:02   (1.413 s / it)
+[01-04 05:01:56] (n/spark/pretrain/main.py, line 118)=>   [*] [ep55/100]    Min/Last Recon Loss: 0.9956 0.9956,    Cost: 5.28s,    Remain: 0:03:52,    Finish @ 01-03 21:05
+[01-04 05:01:57] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 56:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9953 (0.9953)  orig_norm: 0.5691 (0.5691)  iter: 1.3751s  data: 0.0006s
+[01-04 05:01:59] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 56:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9953 (0.9956)  orig_norm: 0.5397 (0.5544)  iter: 1.3765s  data: 0.0004s
+[01-04 05:01:59] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 56:   Total time:      0:00:02   (1.378 s / it)
+[01-04 05:02:00] (n/spark/pretrain/main.py, line 118)=>   [*] [ep56/100]    Min/Last Recon Loss: 0.9956 0.9956,    Cost: 5.28s,    Remain: 0:03:47,    Finish @ 01-03 21:05
+[01-04 05:02:02] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 57:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9955 (0.9955)  orig_norm: 0.5492 (0.5492)  iter: 1.3759s  data: 0.0006s
+[01-04 05:02:03] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 57:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9954 (0.9954)  orig_norm: 0.5462 (0.5477)  iter: 1.3791s  data: 0.0004s
+[01-04 05:02:03] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 57:   Total time:      0:00:02   (1.382 s / it)
+[01-04 05:02:05] (n/spark/pretrain/main.py, line 118)=>   [*] [ep57/100]    Min/Last Recon Loss: 0.9954 0.9954,    Cost: 5.43s,    Remain: 0:03:48,    Finish @ 01-03 21:05
+[01-04 05:02:06] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 58:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9953 (0.9953)  orig_norm: 0.5576 (0.5576)  iter: 1.4299s  data: 0.0007s
+[01-04 05:02:08] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 58:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9953 (0.9953)  orig_norm: 0.5576 (0.5592)  iter: 1.4037s  data: 0.0004s
+[01-04 05:02:08] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 58:   Total time:      0:00:02   (1.406 s / it)
+[01-04 05:02:09] (n/spark/pretrain/main.py, line 118)=>   [*] [ep58/100]    Min/Last Recon Loss: 0.9953 0.9953,    Cost: 5.35s,    Remain: 0:03:39,    Finish @ 01-03 21:05
+[01-04 05:02:11] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 59:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9947 (0.9947)  orig_norm: 0.5813 (0.5813)  iter: 1.3730s  data: 0.0005s
+[01-04 05:02:12] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 59:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9947 (0.9951)  orig_norm: 0.5268 (0.5540)  iter: 1.3756s  data: 0.0004s
+[01-04 05:02:12] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 59:   Total time:      0:00:02   (1.378 s / it)
+[01-04 05:02:14] (n/spark/pretrain/main.py, line 118)=>   [*] [ep59/100]    Min/Last Recon Loss: 0.9951 0.9951,    Cost: 5.29s,    Remain: 0:03:32,    Finish @ 01-03 21:05
+[01-04 05:02:15] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 60:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9954 (0.9954)  orig_norm: 0.5463 (0.5463)  iter: 1.3790s  data: 0.0005s
+[01-04 05:02:16] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 60:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9948 (0.9951)  orig_norm: 0.5463 (0.5591)  iter: 1.3795s  data: 0.0004s
+[01-04 05:02:16] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 60:   Total time:      0:00:02   (1.382 s / it)
+[01-04 05:02:18] (n/spark/pretrain/main.py, line 118)=>   [*] [ep60/100]    Min/Last Recon Loss: 0.9951 0.9951,    Cost: 5.46s,    Remain: 0:03:33,    Finish @ 01-03 21:05
+[01-04 05:02:20] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 61:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9951 (0.9951)  orig_norm: 0.5563 (0.5563)  iter: 1.4335s  data: 0.0005s
+[01-04 05:02:21] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 61:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9951 (0.9955)  orig_norm: 0.5157 (0.5360)  iter: 1.4082s  data: 0.0003s
+[01-04 05:02:21] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 61:   Total time:      0:00:02   (1.410 s / it)
+[01-04 05:02:22] (n/spark/pretrain/main.py, line 118)=>   [*] [ep61/100]    Min/Last Recon Loss: 0.9951 0.9955,    Cost: 5.28s,    Remain: 0:03:21,    Finish @ 01-03 21:05
+[01-04 05:02:25] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 62:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9952 (0.9952)  orig_norm: 0.5513 (0.5513)  iter: 1.4497s  data: 0.0006s
+[01-04 05:02:26] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 62:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9943 (0.9948)  orig_norm: 0.5513 (0.5629)  iter: 1.4126s  data: 0.0004s
+[01-04 05:02:26] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 62:   Total time:      0:00:02   (1.415 s / it)
+[01-04 05:02:28] (n/spark/pretrain/main.py, line 118)=>   [*] [ep62/100]    Min/Last Recon Loss: 0.9948 0.9948,    Cost: 5.32s,    Remain: 0:03:17,    Finish @ 01-03 21:05
+[01-04 05:02:29] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 63:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9947 (0.9947)  orig_norm: 0.5590 (0.5590)  iter: 1.3742s  data: 0.0006s
+[01-04 05:02:31] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 63:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9947 (0.9949)  orig_norm: 0.5518 (0.5554)  iter: 1.3879s  data: 0.0004s
+[01-04 05:02:31] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 63:   Total time:      0:00:02   (1.391 s / it)
+[01-04 05:02:32] (n/spark/pretrain/main.py, line 118)=>   [*] [ep63/100]    Min/Last Recon Loss: 0.9948 0.9949,    Cost: 5.57s,    Remain: 0:03:21,    Finish @ 01-03 21:05
+[01-04 05:02:34] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 64:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9946 (0.9946)  orig_norm: 0.5513 (0.5513)  iter: 1.4389s  data: 0.0004s
+[01-04 05:02:35] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 64:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9946 (0.9951)  orig_norm: 0.5153 (0.5333)  iter: 1.4208s  data: 0.0003s
+[01-04 05:02:35] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 64:   Total time:      0:00:02   (1.422 s / it)
+[01-04 05:02:37] (n/spark/pretrain/main.py, line 118)=>   [*] [ep64/100]    Min/Last Recon Loss: 0.9948 0.9951,    Cost: 5.35s,    Remain: 0:03:07,    Finish @ 01-03 21:05
+[01-04 05:02:38] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 65:  [0/2]  eta: 0:00:02  max_lr: 0.00002  last_loss: 0.9946 (0.9946)  orig_norm: 0.5578 (0.5578)  iter: 1.3831s  data: 0.0005s
+[01-04 05:02:40] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 65:  [1/2]  eta: 0:00:01  max_lr: 0.00002  last_loss: 0.9946 (0.9946)  orig_norm: 0.5478 (0.5528)  iter: 1.3850s  data: 0.0004s
+[01-04 05:02:40] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 65:   Total time:      0:00:02   (1.386 s / it)
+[01-04 05:02:41] (n/spark/pretrain/main.py, line 118)=>   [*] [ep65/100]    Min/Last Recon Loss: 0.9946 0.9946,    Cost: 5.31s,    Remain: 0:03:01,    Finish @ 01-03 21:05
+[01-04 05:02:43] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 66:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9948 (0.9948)  orig_norm: 0.5557 (0.5557)  iter: 1.3862s  data: 0.0005s
+[01-04 05:02:44] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 66:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9948 (0.9948)  orig_norm: 0.5432 (0.5495)  iter: 1.3892s  data: 0.0003s
+[01-04 05:02:44] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 66:   Total time:      0:00:02   (1.392 s / it)
+[01-04 05:02:45] (n/spark/pretrain/main.py, line 118)=>   [*] [ep66/100]    Min/Last Recon Loss: 0.9946 0.9948,    Cost: 5.27s,    Remain: 0:02:54,    Finish @ 01-03 21:05
+[01-04 05:02:47] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 67:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9947 (0.9947)  orig_norm: 0.5411 (0.5411)  iter: 1.3824s  data: 0.0005s
+[01-04 05:02:48] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 67:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9946 (0.9946)  orig_norm: 0.5411 (0.5548)  iter: 1.3842s  data: 0.0003s
+[01-04 05:02:48] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 67:   Total time:      0:00:02   (1.386 s / it)
+[01-04 05:02:50] (n/spark/pretrain/main.py, line 118)=>   [*] [ep67/100]    Min/Last Recon Loss: 0.9946 0.9946,    Cost: 5.17s,    Remain: 0:02:45,    Finish @ 01-03 21:05
+[01-04 05:02:51] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 68:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9953 (0.9953)  orig_norm: 0.5336 (0.5336)  iter: 1.3882s  data: 0.0005s
+[01-04 05:02:52] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 68:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9948 (0.9950)  orig_norm: 0.5336 (0.5338)  iter: 1.3868s  data: 0.0003s
+[01-04 05:02:52] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 68:   Total time:      0:00:02   (1.389 s / it)
+[01-04 05:02:54] (n/spark/pretrain/main.py, line 118)=>   [*] [ep68/100]    Min/Last Recon Loss: 0.9946 0.9950,    Cost: 5.4s,    Remain: 0:02:47,    Finish @ 01-03 21:05
+[01-04 05:02:57] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 69:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9946 (0.9946)  orig_norm: 0.5511 (0.5511)  iter: 1.4381s  data: 0.0006s
+[01-04 05:02:58] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 69:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9945 (0.9946)  orig_norm: 0.5506 (0.5508)  iter: 1.4106s  data: 0.0004s
+[01-04 05:02:58] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 69:   Total time:      0:00:02   (1.412 s / it)
+[01-04 05:02:59] (n/spark/pretrain/main.py, line 118)=>   [*] [ep69/100]    Min/Last Recon Loss: 0.9946 0.9946,    Cost: 5.27s,    Remain: 0:02:38,    Finish @ 01-03 21:05
+[01-04 05:03:01] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 70:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9950 (0.9950)  orig_norm: 0.5307 (0.5307)  iter: 1.3784s  data: 0.0005s
+[01-04 05:03:02] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 70:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9945 (0.9948)  orig_norm: 0.5307 (0.5407)  iter: 1.3764s  data: 0.0003s
+[01-04 05:03:02] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 70:   Total time:      0:00:02   (1.379 s / it)
+[01-04 05:03:04] (n/spark/pretrain/main.py, line 118)=>   [*] [ep70/100]    Min/Last Recon Loss: 0.9946 0.9948,    Cost: 5.17s,    Remain: 0:02:30,    Finish @ 01-03 21:05
+[01-04 05:03:05] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 71:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9944 (0.9944)  orig_norm: 0.5605 (0.5605)  iter: 1.3801s  data: 0.0004s
+[01-04 05:03:06] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 71:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9944 (0.9946)  orig_norm: 0.5438 (0.5521)  iter: 1.3813s  data: 0.0003s
+[01-04 05:03:06] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 71:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:03:08] (n/spark/pretrain/main.py, line 118)=>   [*] [ep71/100]    Min/Last Recon Loss: 0.9946 0.9946,    Cost: 5.33s,    Remain: 0:02:29,    Finish @ 01-03 21:05
+[01-04 05:03:09] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 72:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9950 (0.9950)  orig_norm: 0.5295 (0.5295)  iter: 1.3791s  data: 0.0005s
+[01-04 05:03:11] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 72:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9946 (0.9948)  orig_norm: 0.5295 (0.5370)  iter: 1.3820s  data: 0.0004s
+[01-04 05:03:11] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 72:   Total time:      0:00:02   (1.385 s / it)
+[01-04 05:03:12] (n/spark/pretrain/main.py, line 118)=>   [*] [ep72/100]    Min/Last Recon Loss: 0.9946 0.9948,    Cost: 5.32s,    Remain: 0:02:24,    Finish @ 01-03 21:05
+[01-04 05:03:14] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 73:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9949 (0.9949)  orig_norm: 0.5177 (0.5177)  iter: 1.3791s  data: 0.0005s
+[01-04 05:03:15] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 73:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9949 (0.9949)  orig_norm: 0.5177 (0.5205)  iter: 1.3788s  data: 0.0003s
+[01-04 05:03:15] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 73:   Total time:      0:00:02   (1.381 s / it)
+[01-04 05:03:17] (n/spark/pretrain/main.py, line 118)=>   [*] [ep73/100]    Min/Last Recon Loss: 0.9946 0.9949,    Cost: 5.4s,    Remain: 0:02:20,    Finish @ 01-03 21:05
+[01-04 05:03:18] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 74:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9949 (0.9949)  orig_norm: 0.5276 (0.5276)  iter: 1.3797s  data: 0.0006s
+[01-04 05:03:20] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 74:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9946 (0.9948)  orig_norm: 0.5276 (0.5293)  iter: 1.3964s  data: 0.0005s
+[01-04 05:03:20] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 74:   Total time:      0:00:02   (1.399 s / it)
+[01-04 05:03:21] (n/spark/pretrain/main.py, line 118)=>   [*] [ep74/100]    Min/Last Recon Loss: 0.9946 0.9948,    Cost: 5.25s,    Remain: 0:02:11,    Finish @ 01-03 21:05
+[01-04 05:03:22] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 75:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9949 (0.9949)  orig_norm: 0.5357 (0.5357)  iter: 1.3782s  data: 0.0006s
+[01-04 05:03:24] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 75:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9943 (0.9946)  orig_norm: 0.5357 (0.5407)  iter: 1.3796s  data: 0.0004s
+[01-04 05:03:24] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 75:   Total time:      0:00:02   (1.382 s / it)
+[01-04 05:03:25] (n/spark/pretrain/main.py, line 118)=>   [*] [ep75/100]    Min/Last Recon Loss: 0.9946 0.9946,    Cost: 5.24s,    Remain: 0:02:06,    Finish @ 01-03 21:05
+[01-04 05:03:27] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 76:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9944 (0.9944)  orig_norm: 0.5394 (0.5394)  iter: 1.3825s  data: 0.0008s
+[01-04 05:03:28] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 76:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9943 (0.9944)  orig_norm: 0.5394 (0.5414)  iter: 1.3820s  data: 0.0005s
+[01-04 05:03:28] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 76:   Total time:      0:00:02   (1.384 s / it)
+[01-04 05:03:30] (n/spark/pretrain/main.py, line 118)=>   [*] [ep76/100]    Min/Last Recon Loss: 0.9944 0.9944,    Cost: 5.23s,    Remain: 0:02:00,    Finish @ 01-03 21:05
+[01-04 05:03:31] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 77:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9943 (0.9943)  orig_norm: 0.5544 (0.5544)  iter: 1.3818s  data: 0.0005s
+[01-04 05:03:32] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 77:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9943 (0.9944)  orig_norm: 0.5252 (0.5398)  iter: 1.3818s  data: 0.0004s
+[01-04 05:03:32] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 77:   Total time:      0:00:02   (1.385 s / it)
+[01-04 05:03:34] (n/spark/pretrain/main.py, line 118)=>   [*] [ep77/100]    Min/Last Recon Loss: 0.9944 0.9944,    Cost: 5.25s,    Remain: 0:01:56,    Finish @ 01-03 21:05
+[01-04 05:03:35] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 78:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9936 (0.9936)  orig_norm: 0.5592 (0.5592)  iter: 1.3796s  data: 0.0007s
+[01-04 05:03:37] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 78:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9936 (0.9939)  orig_norm: 0.5551 (0.5572)  iter: 1.3800s  data: 0.0004s
+[01-04 05:03:37] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 78:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:03:38] (n/spark/pretrain/main.py, line 118)=>   [*] [ep78/100]    Min/Last Recon Loss: 0.9939 0.9939,    Cost: 5.26s,    Remain: 0:01:50,    Finish @ 01-03 21:05
+[01-04 05:03:40] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 79:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9943 (0.9943)  orig_norm: 0.5603 (0.5603)  iter: 1.3816s  data: 0.0006s
+[01-04 05:03:41] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 79:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9943 (0.9943)  orig_norm: 0.5422 (0.5513)  iter: 1.3804s  data: 0.0004s
+[01-04 05:03:41] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 79:   Total time:      0:00:02   (1.383 s / it)
+[01-04 05:03:43] (n/spark/pretrain/main.py, line 118)=>   [*] [ep79/100]    Min/Last Recon Loss: 0.9939 0.9943,    Cost: 5.42s,    Remain: 0:01:48,    Finish @ 01-03 21:05
+[01-04 05:03:44] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 80:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9939 (0.9939)  orig_norm: 0.5614 (0.5614)  iter: 1.4435s  data: 0.0005s
+[01-04 05:03:46] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 80:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9939 (0.9944)  orig_norm: 0.5343 (0.5479)  iter: 1.4169s  data: 0.0004s
+[01-04 05:03:46] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 80:   Total time:      0:00:02   (1.420 s / it)
+[01-04 05:03:47] (n/spark/pretrain/main.py, line 118)=>   [*] [ep80/100]    Min/Last Recon Loss: 0.9939 0.9944,    Cost: 5.7s,    Remain: 0:01:48,    Finish @ 01-03 21:05
+[01-04 05:03:49] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 81:  [0/2]  eta: 0:00:02  max_lr: 0.00001  last_loss: 0.9940 (0.9940)  orig_norm: 0.5638 (0.5638)  iter: 1.4453s  data: 0.0004s
+[01-04 05:03:50] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 81:  [1/2]  eta: 0:00:01  max_lr: 0.00001  last_loss: 0.9940 (0.9943)  orig_norm: 0.5284 (0.5461)  iter: 1.4130s  data: 0.0003s
+[01-04 05:03:50] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 81:   Total time:      0:00:02   (1.415 s / it)
+[01-04 05:03:52] (n/spark/pretrain/main.py, line 118)=>   [*] [ep81/100]    Min/Last Recon Loss: 0.9939 0.9943,    Cost: 5.28s,    Remain: 0:01:35,    Finish @ 01-03 21:05
+[01-04 05:03:53] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 82:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9943 (0.9943)  orig_norm: 0.5459 (0.5459)  iter: 1.3753s  data: 0.0004s
+[01-04 05:03:55] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 82:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9943 (0.9944)  orig_norm: 0.5369 (0.5414)  iter: 1.3808s  data: 0.0003s
+[01-04 05:03:55] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 82:   Total time:      0:00:02   (1.382 s / it)
+[01-04 05:03:56] (n/spark/pretrain/main.py, line 118)=>   [*] [ep82/100]    Min/Last Recon Loss: 0.9939 0.9944,    Cost: 5.39s,    Remain: 0:01:32,    Finish @ 01-03 21:05
+[01-04 05:03:58] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 83:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9941 (0.9941)  orig_norm: 0.5415 (0.5415)  iter: 1.3849s  data: 0.0005s
+[01-04 05:03:59] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 83:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9937 (0.9939)  orig_norm: 0.5415 (0.5538)  iter: 1.3806s  data: 0.0003s
+[01-04 05:03:59] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 83:   Total time:      0:00:02   (1.382 s / it)
+[01-04 05:04:01] (n/spark/pretrain/main.py, line 118)=>   [*] [ep83/100]    Min/Last Recon Loss: 0.9939 0.9939,    Cost: 6.07s,    Remain: 0:01:37,    Finish @ 01-03 21:05
+[01-04 05:04:03] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 84:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9945 (0.9945)  orig_norm: 0.5290 (0.5290)  iter: 1.4571s  data: 0.0007s
+[01-04 05:04:04] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 84:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9942 (0.9944)  orig_norm: 0.5290 (0.5445)  iter: 1.4203s  data: 0.0004s
+[01-04 05:04:04] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 84:   Total time:      0:00:02   (1.423 s / it)
+[01-04 05:04:06] (n/spark/pretrain/main.py, line 118)=>   [*] [ep84/100]    Min/Last Recon Loss: 0.9939 0.9944,    Cost: 5.45s,    Remain: 0:01:22,    Finish @ 01-03 21:05
+[01-04 05:04:07] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 85:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9938 (0.9938)  orig_norm: 0.5576 (0.5576)  iter: 1.3979s  data: 0.0005s
+[01-04 05:04:09] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 85:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9938 (0.9941)  orig_norm: 0.5205 (0.5390)  iter: 1.3939s  data: 0.0003s
+[01-04 05:04:09] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 85:   Total time:      0:00:02   (1.396 s / it)
+[01-04 05:04:10] (n/spark/pretrain/main.py, line 118)=>   [*] [ep85/100]    Min/Last Recon Loss: 0.9939 0.9941,    Cost: 5.24s,    Remain: 0:01:13,    Finish @ 01-03 21:05
+[01-04 05:04:11] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 86:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9939 (0.9939)  orig_norm: 0.5737 (0.5737)  iter: 1.3770s  data: 0.0005s
+[01-04 05:04:13] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 86:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9939 (0.9946)  orig_norm: 0.5009 (0.5373)  iter: 1.3800s  data: 0.0003s
+[01-04 05:04:13] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 86:   Total time:      0:00:02   (1.382 s / it)
+[01-04 05:04:14] (n/spark/pretrain/main.py, line 118)=>   [*] [ep86/100]    Min/Last Recon Loss: 0.9939 0.9946,    Cost: 5.24s,    Remain: 0:01:08,    Finish @ 01-03 21:05
+[01-04 05:04:16] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 87:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9939 (0.9939)  orig_norm: 0.5405 (0.5405)  iter: 1.3768s  data: 0.0005s
+[01-04 05:04:17] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 87:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9939 (0.9940)  orig_norm: 0.5405 (0.5406)  iter: 1.3867s  data: 0.0004s
+[01-04 05:04:17] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 87:   Total time:      0:00:02   (1.390 s / it)
+[01-04 05:04:19] (n/spark/pretrain/main.py, line 118)=>   [*] [ep87/100]    Min/Last Recon Loss: 0.9939 0.9940,    Cost: 5.32s,    Remain: 0:01:04,    Finish @ 01-03 21:05
+[01-04 05:04:20] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 88:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9945 (0.9945)  orig_norm: 0.5293 (0.5293)  iter: 1.3847s  data: 0.0005s
+[01-04 05:04:21] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 88:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9945 (0.9946)  orig_norm: 0.5229 (0.5261)  iter: 1.3847s  data: 0.0004s
+[01-04 05:04:21] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 88:   Total time:      0:00:02   (1.388 s / it)
+[01-04 05:04:23] (n/spark/pretrain/main.py, line 118)=>   [*] [ep88/100]    Min/Last Recon Loss: 0.9939 0.9946,    Cost: 5.32s,    Remain: 0:00:59,    Finish @ 01-03 21:05
+[01-04 05:04:24] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 89:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9944 (0.9944)  orig_norm: 0.5386 (0.5386)  iter: 1.3841s  data: 0.0007s
+[01-04 05:04:26] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 89:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9944 (0.9945)  orig_norm: 0.5320 (0.5353)  iter: 1.3821s  data: 0.0004s
+[01-04 05:04:26] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 89:   Total time:      0:00:02   (1.384 s / it)
+[01-04 05:04:27] (n/spark/pretrain/main.py, line 118)=>   [*] [ep89/100]    Min/Last Recon Loss: 0.9939 0.9945,    Cost: 5.19s,    Remain: 0:00:52,    Finish @ 01-03 21:05
+[01-04 05:04:30] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 90:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9936 (0.9936)  orig_norm: 0.5654 (0.5654)  iter: 1.4349s  data: 0.0006s
+[01-04 05:04:31] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 90:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9936 (0.9937)  orig_norm: 0.5570 (0.5612)  iter: 1.4076s  data: 0.0004s
+[01-04 05:04:31] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 90:   Total time:      0:00:02   (1.410 s / it)
+[01-04 05:04:33] (n/spark/pretrain/main.py, line 118)=>   [*] [ep90/100]    Min/Last Recon Loss: 0.9937 0.9937,    Cost: 5.44s,    Remain: 0:00:49,    Finish @ 01-03 21:05
+[01-04 05:04:34] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 91:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9945 (0.9945)  orig_norm: 0.5304 (0.5304)  iter: 1.3846s  data: 0.0005s
+[01-04 05:04:36] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 91:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9945 (0.9946)  orig_norm: 0.5247 (0.5276)  iter: 1.3828s  data: 0.0003s
+[01-04 05:04:36] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 91:   Total time:      0:00:02   (1.385 s / it)
+[01-04 05:04:37] (n/spark/pretrain/main.py, line 118)=>   [*] [ep91/100]    Min/Last Recon Loss: 0.9937 0.9946,    Cost: 5.17s,    Remain: 0:00:41,    Finish @ 01-03 21:05
+[01-04 05:04:38] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 92:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9938 (0.9938)  orig_norm: 0.5563 (0.5563)  iter: 1.3794s  data: 0.0005s
+[01-04 05:04:40] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 92:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9938 (0.9941)  orig_norm: 0.5331 (0.5447)  iter: 1.3788s  data: 0.0004s
+[01-04 05:04:40] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 92:   Total time:      0:00:02   (1.381 s / it)
+[01-04 05:04:41] (n/spark/pretrain/main.py, line 118)=>   [*] [ep92/100]    Min/Last Recon Loss: 0.9937 0.9941,    Cost: 5.41s,    Remain: 0:00:38,    Finish @ 01-03 21:05
+[01-04 05:04:43] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 93:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9934 (0.9934)  orig_norm: 0.5780 (0.5780)  iter: 1.3847s  data: 0.0005s
+[01-04 05:04:44] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 93:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9934 (0.9939)  orig_norm: 0.5293 (0.5537)  iter: 1.3839s  data: 0.0004s
+[01-04 05:04:44] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 93:   Total time:      0:00:02   (1.387 s / it)
+[01-04 05:04:46] (n/spark/pretrain/main.py, line 118)=>   [*] [ep93/100]    Min/Last Recon Loss: 0.9937 0.9939,    Cost: 5.43s,    Remain: 0:00:33,    Finish @ 01-03 21:05
+[01-04 05:04:47] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 94:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9937 (0.9937)  orig_norm: 0.5619 (0.5619)  iter: 1.3792s  data: 0.0005s
+[01-04 05:04:49] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 94:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9937 (0.9941)  orig_norm: 0.5380 (0.5500)  iter: 1.3815s  data: 0.0003s
+[01-04 05:04:49] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 94:   Total time:      0:00:02   (1.384 s / it)
+[01-04 05:04:50] (n/spark/pretrain/main.py, line 118)=>   [*] [ep94/100]    Min/Last Recon Loss: 0.9937 0.9941,    Cost: 5.21s,    Remain: 0:00:26,    Finish @ 01-03 21:05
+[01-04 05:04:52] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 95:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9936 (0.9936)  orig_norm: 0.5524 (0.5524)  iter: 1.3809s  data: 0.0005s
+[01-04 05:04:53] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 95:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9931 (0.9933)  orig_norm: 0.5524 (0.5731)  iter: 1.3817s  data: 0.0004s
+[01-04 05:04:53] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 95:   Total time:      0:00:02   (1.385 s / it)
+[01-04 05:04:54] (n/spark/pretrain/main.py, line 118)=>   [*] [ep95/100]    Min/Last Recon Loss: 0.9933 0.9933,    Cost: 5.22s,    Remain: 0:00:21,    Finish @ 01-03 21:05
+[01-04 05:04:56] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 96:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9938 (0.9938)  orig_norm: 0.5575 (0.5575)  iter: 1.3873s  data: 0.0005s
+[01-04 05:04:57] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 96:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9936 (0.9937)  orig_norm: 0.5553 (0.5564)  iter: 1.3876s  data: 0.0003s
+[01-04 05:04:57] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 96:   Total time:      0:00:02   (1.390 s / it)
+[01-04 05:04:59] (n/spark/pretrain/main.py, line 118)=>   [*] [ep96/100]    Min/Last Recon Loss: 0.9933 0.9937,    Cost: 5.66s,    Remain: 0:00:17,    Finish @ 01-03 21:05
+[01-04 05:05:02] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 97:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9944 (0.9944)  orig_norm: 0.5351 (0.5351)  iter: 1.4354s  data: 0.0005s
+[01-04 05:05:03] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 97:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9942 (0.9943)  orig_norm: 0.5351 (0.5375)  iter: 1.4064s  data: 0.0003s
+[01-04 05:05:03] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 97:   Total time:      0:00:02   (1.408 s / it)
+[01-04 05:05:04] (n/spark/pretrain/main.py, line 118)=>   [*] [ep97/100]    Min/Last Recon Loss: 0.9933 0.9943,    Cost: 5.29s,    Remain: 0:00:11,    Finish @ 01-03 21:05
+[01-04 05:05:06] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 98:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9941 (0.9941)  orig_norm: 0.5440 (0.5440)  iter: 1.3783s  data: 0.0005s
+[01-04 05:05:07] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 98:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9938 (0.9939)  orig_norm: 0.5440 (0.5494)  iter: 1.3815s  data: 0.0003s
+[01-04 05:05:07] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 98:   Total time:      0:00:02   (1.384 s / it)
+[01-04 05:05:09] (n/spark/pretrain/main.py, line 118)=>   [*] [ep98/100]    Min/Last Recon Loss: 0.9933 0.9939,    Cost: 5.32s,    Remain: 0:00:05,    Finish @ 01-03 21:05
+[01-04 05:05:10] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 99:  [0/2]  eta: 0:00:02  max_lr: 0.00000  last_loss: 0.9940 (0.9940)  orig_norm: 0.5451 (0.5451)  iter: 1.3938s  data: 0.0004s
+[01-04 05:05:12] (k/pretrain/utils/misc.py, line 317)=> [PT] Epoch 99:  [1/2]  eta: 0:00:01  max_lr: 0.00000  last_loss: 0.9940 (0.9940)  orig_norm: 0.5450 (0.5451)  iter: 1.3883s  data: 0.0003s
+[01-04 05:05:12] (k/pretrain/utils/misc.py, line 338)=> [PT] Epoch 99:   Total time:      0:00:02   (1.391 s / it)
+[01-04 05:05:13] (n/spark/pretrain/main.py, line 118)=>   [*] [ep99/100]    Min/Last Recon Loss: 0.9933 0.9940,    Cost: 5.17s,    Remain: 0:00:00,    Finish @ 01-03 21:05
+[01-04 05:05:13] (n/spark/pretrain/main.py, line 133)=> final args:
+{'ada': 0.0,
+ 'base_lr': 0.0002,
+ 'batch_size_per_gpu': 32,
+ 'bs': 32,
+ 'clip': 5.0,
+ 'cmd': '--model repvit_m2_3 --data_path '
+        '/content/drive/MyDrive/PK-YOLO-main/datasets/Br35H/images/train '
+        '--exp_name brain_pretrain --bs 32 --ep 100',
+ 'commit_id': '[unknown]',
+ 'commit_msg': '[unknown]',
+ 'cur_ep': '100/100',
+ 'data_path': '/content/drive/MyDrive/PK-YOLO-main/datasets/Br35H/images/train',
+ 'dataloader_workers': 8,
+ 'densify_norm': '',
+ 'device': device(type='cuda', index=0),
+ 'dp': 0.0,
+ 'ep': 100,
+ 'exp_dir': '/content/drive/MyDrive/PK-YOLO-main/spark/pretrain/your_exp_dir',
+ 'exp_name': 'brain_pretrain',
+ 'finish_time': '01-03 21:05',
+ 'first_logging': False,
+ 'glb_batch_size': 32,
+ 'init_weight': '',
+ 'input_size': 224,
+ 'is_convnext': False,
+ 'is_resnet': False,
+ 'last_loss': 0.994045078754425,
+ 'local_rank': 0,
+ 'log_epoch': <bound method Args.log_epoch of Args(prog='main.py', usage=None, description=None, formatter_class=<class 'argparse.HelpFormatter'>, conflict_handler='error', add_help=True)>,
+ 'log_txt_name': '/content/drive/MyDrive/PK-YOLO-main/spark/pretrain/your_exp_dir/pretrain_log.txt',
+ 'lr': 2.5e-05,
+ 'mask': 0.6,
+ 'model': 'repvit_m2_3',
+ 'opt': 'lamb',
+ 'remain_time': '0:00:00',
+ 'resume_from': '',
+ 'sbn': False,
+ 'tb_lg_dir': '/content/drive/MyDrive/PK-YOLO-main/spark/pretrain/your_exp_dir/tensorboard_log',
+ 'wd': 0.04,
+ 'wde': 0.2,
+ 'wp_ep': 40}
+[01-04 05:05:13] (n/spark/pretrain/main.py, line 134)=> 
+
+
+[01-04 05:05:13] (n/spark/pretrain/main.py, line 135)=>   [*] [PT finished]    Min/Last Recon Loss: 0.9933 0.9940,    Total Cost: 0.1h
+
+[01-04 05:05:13] (n/spark/pretrain/main.py, line 136)=> 
+
+
