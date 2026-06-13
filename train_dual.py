@@ -1,4 +1,3 @@
-from collections import OrderedDict
 import argparse
 import math
 import os
@@ -107,25 +106,16 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
     pretrained = weights.endswith('.pt')
     if pretrained:
         with torch_distributed_zero_first(LOCAL_RANK):
-            weights = attempt_download(weights)  # download weights
-        
-        # --- LAAZMI: Is line se comment (#) hatayein ---
-        ckpt = torch.load(weights, map_location='cpu', weights_only=False) 
-        
-        model = Model(cfg or ckpt['model'].yaml, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)
-        exclude = ['anchor'] if (cfg or hyp.get('anchors')) and not resume else []
-        
-        # Compatibility Fix for SparK weights
-        if isinstance(ckpt.get('model'), (dict, OrderedDict)):
-            csd = ckpt['model'] 
-        else:
-            csd = ckpt['model'].float().state_dict() if hasattr(ckpt.get('model'), 'state_dict') else ckpt
-            
-        csd = intersect_dicts(csd, model.state_dict(), exclude=exclude)
-        model.load_state_dict(csd, strict=False)
-        LOGGER.info(f'Transferred {len(csd)}/{len(model.state_dict())} items from {weights}')
+            weights = attempt_download(weights)  # download if not found locally
+        ckpt = torch.load(weights, map_location='cpu')  # load checkpoint to CPU to avoid CUDA memory leak
+        model = Model(cfg or ckpt['model'].yaml, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
+        exclude = ['anchor'] if (cfg or hyp.get('anchors')) and not resume else []  # exclude keys
+        csd = ckpt['model'].float().state_dict()  # checkpoint state_dict as FP32
+        csd = intersect_dicts(csd, model.state_dict(), exclude=exclude)  # intersect
+        model.load_state_dict(csd, strict=False)  # load
+        LOGGER.info(f'Transferred {len(csd)}/{len(model.state_dict())} items from {weights}')  # report
     else:
-        model = Model(cfg, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)
+        model = Model(cfg, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
     amp = check_amp(model)  # check AMP
 
     # Freeze
